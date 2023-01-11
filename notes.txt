@@ -1,0 +1,241 @@
+<!-- for (let j = netoFloat; j < netoFloatTemporal; j++) {
+  console.log(netoFloatTemporal);
+  if (netoFloat < netoFloatTemporal) {
+    netoFloatProducto = netoFloatTemporal;
+    //console.log(netoFloatTemporal);
+    if (
+      response.data[i].limInf < netoFloatProducto &&
+      response.data[i].limSup > netoFloatProducto
+    ) {
+      let base = netoFloatProducto - limInf;
+      let impuestoMarginal = base * porcentaje;
+      let isrData = impuestoMarginal + cuota;
+      netoFloatTemporal = netoFloat + isrData;
+      this.brutoData = netoFloatTemporal;
+      this.brutoData = this.brutoData.toFixed(2);
+    }
+  }
+} 
+
+
+
+calculaBruto() {
+      axios
+        .get(
+          "http://localhost:8081/Isr/año/" +
+          this.añoData +
+          "/" +
+          this.periodoData
+        )
+        .then((response) => {
+          this.result = response.data;
+          for (let i = 0; i < this.result.length; i++) {
+            let netoFloat = parseFloat(this.netoData);
+            let netoFloatProducto = this.netoData * 2;
+            let limInf = response.data[i].limInf;
+            let porcentaje = response.data[i].porcentaje;
+            let cuota = response.data[i].cuota;
+            console.log(
+              response.data[i].limInf +
+              "  -------  " +
+              netoFloatProducto +
+              "  ,   " +
+              response.data[i].limSup
+            );
+            if (
+              response.data[i].limInf < netoFloatProducto &&
+              response.data[i].limSup > netoFloatProducto
+            ) {
+              let base = netoFloatProducto - limInf;
+              let impuestoMarginal = base * porcentaje;
+              let isrData = impuestoMarginal + cuota;
+              let netoFloatTemporal = netoFloat + isrData;
+              console.log(netoFloatTemporal);
+            }
+          }
+        });
+    },
+
+
+
+
+
+
+<!-- <template>
+  <div>
+    <v-combobox v-model="añoData" :items="años" label="Año" outlined dense></v-combobox>
+    <v-combobox v-model="periodoData" :items="periodo" label="Periodo" outlined dense></v-combobox>
+    <v-text-field v-model="netoData" label="Neto" aria-required="true" outlined dense></v-text-field>
+    <div class="btn-container">
+      <v-btn depressed color="primary" @click="calculaIsr()"> Calcular </v-btn>
+    </div>
+    <v-text-field class="isrData" v-model="isrData" label="Isr" outlined dense readonly></v-text-field>
+    <v-text-field v-model="brutoData" label="Bruto" outlined dense readonly></v-text-field>
+    <br>
+    <h1>Calculo por excel</h1>
+    <label v-if="algo">bruto a neto</label>
+    <label v-else>neto a bruto</label>
+
+    <v-switch v-model="algo" :label="`Switch 1: ${algo.toString()}`"></v-switch>
+    <v-file-input id="archivo" label="File input" @change="subirExcel()" outlined dense></v-file-input> -->
+    <!-- <v-text-field v-model="datos.porcentaje" label="Ingreso" aria-required="true" outlined dense></v-text-field>
+    <v-text-field v-model="datos.cuota" label="Ingreso" aria-required="true" outlined dense></v-text-field> -->
+<!--     </div>
+</template>
+
+<script>
+import axios from "axios";
+import readXlsFile from "read-excel-file"
+
+export default {
+  name: "FormR",
+  props: ["datos"],
+  data() {
+    return {
+      algo: true,
+      itemsFile: [],
+      añoData: "",
+      periodoData: "",
+      años: [
+        "2015",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+      ],
+      periodo: ["Mensual", "Quincenal", "Semanal", "Diario"],
+      netoData: "",
+      brutoData: "",
+      isrData: "",
+      result: [],
+    };
+  },
+  methods: {
+    isrNetoBruto(neto, tablasIsr) {
+      //this.getTablasIsr();
+      console.log(tablasIsr);
+      console.log("procesando isr" + neto);
+      for (let i = 0; i < tablasIsr.data.length; i++) {
+        //console.log(response.data[i].limInf);
+        let limInf = tablasIsr.data[i].limInf;
+        let porcentaje = tablasIsr.data[i].porcentaje;
+        let cuota = tablasIsr.data[i].cuota;
+        if (
+          tablasIsr.data[i].limInf < neto &&
+          tablasIsr.data[i].limSup > neto
+        ) {
+          this.mostrar = limInf;
+          this.limInf = limInf;
+          let base = neto - limInf;
+          let impuestoMarginal = base * porcentaje;
+          this.isrData = impuestoMarginal + cuota;
+          this.isrData = this.isrData.toFixed(2);
+          this.netoData = neto - this.isrData;
+          let bruto = parseFloat(neto) + parseFloat(this.isrData);
+          this.netoData = this.netoData.toFixed(2);
+          console.log(neto + "   isr:    " + this.isrData + "    bruto    " + bruto);
+        }
+      }
+    },
+    getTablasIsr(neto) {
+      //console.log(neto);
+      axios
+        .get(
+          "http://localhost:8081/Isr/año/" +
+          this.añoData +
+          "/" +
+          this.periodoData
+        )
+        .then((response) => {
+          
+          this.result = response.data;
+          //console.log(this.result);
+          this.isrNetoBruto(neto , response);
+        }) -->
+      /* axios
+        .get(
+          "http://localhost:8081/Isr/año/" +
+          this.añoData +
+          "/" +
+          this.periodoData
+        )
+        .then((response) => {
+          this.result = response.data;
+          console.log(this.result);
+        })
+    },
+
+    subirExcel() {
+      let input = document.getElementById("archivo");
+      readXlsFile(input.files[0]).then((rows) => {
+        this.itemsFile = rows;
+        for (let i = 0; i < this.itemsFile.length; i++) {
+          //console.log(this.itemsFile[i].toString());
+          this.getTablasIsr(this.itemsFile[i].toString());
+        }
+      });
+    }
+  },
+};
+</script>
+
+<style scoped>
+@import "../style/FormR.css";
+</style> */
+
+
+<!-- 
+calculaIsr() {
+  //this.$refs.created();
+  axios
+    .get(
+      "http://localhost:8081/Isr/año/" +
+      this.añoData +
+      "/" +
+      this.periodoData
+    )
+    .then((response) => {
+      this.result = response.data;
+      for (let i = 0; i < this.result.length; i++) {
+        let netoParse = parseFloat(this.netoData);
+        let number = this.netoData * 2;
+        let limInf = response.data[i].limInf;
+        let porcentaje = response.data[i].porcentaje;
+        let cuota = response.data[i].cuota;
+        if (
+          response.data[i].limInf < number &&
+          response.data[i].limSup > number
+        ) {
+          let base = number - limInf;
+          let impuestoMarginal = base * porcentaje;
+          let isrData = impuestoMarginal + cuota;
+          let number2 = netoParse + isrData;
+          //console.log(number2.toFixed(2));
+          for (let j = netoParse; j < number2; j++) {
+            if (netoParse < number2) {
+              number = number2;
+              if (
+                response.data[i].limInf < number &&
+                response.data[i].limSup > number
+              ) {
+                let base = number - limInf;
+                let impuestoMarginal = base * porcentaje;
+                let isrData = impuestoMarginal + cuota;
+                number2 = netoParse + isrData;
+                console.log(number2);
+                this.brutoData = number2;
+                this.brutoData = this.brutoData.toFixed(2);
+              }
+            }
+          }
+        }
+      }
+    })
+    .catch((error) => {
+      //alert("Error");
+    });
+}, -->
